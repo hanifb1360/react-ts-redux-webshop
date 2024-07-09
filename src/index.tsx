@@ -1,16 +1,13 @@
-
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import store from './store';
 import App from './App';
+import store from './store';
 import './index.css';
 
-// Find the root element in your HTML
-const container = document.getElementById('root')!;
-const root = createRoot(container);
+const container = document.getElementById('root');
+const root = createRoot(container!); // Use createRoot instead of ReactDOM.render
 
-// Render the app using createRoot
 root.render(
   <Provider store={store}>
     <App />

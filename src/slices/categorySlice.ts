@@ -1,9 +1,11 @@
+// src/slices/categorySlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Category {
   id: string;
   name: string;
-  parentId?: string;
+  parentId: string | null;
+  createdAt: string;
 }
 
 interface CategoryState {

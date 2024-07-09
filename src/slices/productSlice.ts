@@ -6,7 +6,7 @@ interface Product {
   description: string;
   price: number;
   categoryId: string;
-  imagePath: string[];
+  createdAt: string;
 }
 
 interface ProductState {
@@ -29,3 +29,4 @@ const productSlice = createSlice({
 
 export const { setProducts } = productSlice.actions;
 export default productSlice.reducer;
+

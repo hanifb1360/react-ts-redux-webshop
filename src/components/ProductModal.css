@@ -1,0 +1,41 @@
+/* src/components/ProductModal.css */
+.product-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .product-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  .product-carousel {
+    display: flex;
+    overflow-x: scroll;
+    gap: 10px;
+  }
+  
+  .product-carousel img {
+    max-height: 300px;
+    border-radius: 8px;
+  }
+  

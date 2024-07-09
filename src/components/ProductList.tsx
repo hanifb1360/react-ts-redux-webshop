@@ -1,4 +1,3 @@
-// src/components/ProductList.tsx
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
@@ -7,10 +6,20 @@ import supabase from '../supabaseClient';
 import './ProductList.css';
 import { useCategoryContext } from '../context/CategoryContext';
 
+// Define the Product interface within the same file
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  categoryId: string;
+  createdAt: string;
+}
+
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.products.products);
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { selectedCategory } = useCategoryContext();
 
   useEffect(() => {
@@ -38,19 +47,27 @@ const ProductList: React.FC = () => {
     if (selectedCategory) {
       setFilteredProducts(products.filter(product => product.categoryId === selectedCategory));
     } else {
-      setFilteredProducts(products);
+      setFilteredProducts([]);
     }
   }, [selectedCategory, products]);
 
   return (
     <div className="product-list">
-      {filteredProducts.map((product) => (
-        <div key={product.id} className="product-item">
-          <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p>${product.price}</p>
-        </div>
-      ))}
+      {selectedCategory ? (
+        filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <div key={product.id} className="product-item">
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <p>${product.price}</p>
+            </div>
+          ))
+        ) : (
+          <p>No products available for this category.</p>
+        )
+      ) : (
+        <p>Please select a category to view products.</p>
+      )}
     </div>
   );
 };

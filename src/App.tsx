@@ -6,12 +6,9 @@ import CollapsibleMenu from './components/CollapsibleMenu';
 import ProductList from './components/ProductList';
 import { AuthProvider } from './context/AuthContext';
 import { CategoryProvider } from './context/CategoryContext';
-import useFetchData from './hooks/useFetchData';
 import './App.css';
 
 const App: React.FC = () => {
-  useFetchData();
-
   return (
     <AuthProvider>
       <Router>
@@ -30,6 +27,7 @@ const App: React.FC = () => {
 };
 
 export default App;
+
 
 
 

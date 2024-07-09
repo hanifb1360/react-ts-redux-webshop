@@ -20,10 +20,11 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
 
 export const useCategoryContext = () => {
   const context = useContext(CategoryContext);
-  if (context === undefined) {
-    throw new Error("useCategoryContext must be used within a CategoryProvider");
+  if (!context) {
+    throw new Error('useCategoryContext must be used within a CategoryProvider');
   }
   return context;
 };
+
 
 

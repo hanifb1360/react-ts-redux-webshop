@@ -1,31 +1,32 @@
-// src/components/Navbar.tsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { CSSTransition } from 'react-transition-group';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [animateHamburger, setAnimateHamburger] = useState(false);
+  const [animateClose, setAnimateClose] = useState(false);
 
   const toggleMenu = () => {
+    setAnimateHamburger(!menuOpen);
+    setAnimateClose(menuOpen);
     setMenuOpen(!menuOpen);
   };
 
   return (
     <div className="navbar">
       <div className="navbar-brand">WEBSHOP</div>
-      <FaBars className="hamburger-icon" onClick={toggleMenu} />
-      <CSSTransition in={menuOpen} timeout={300} classNames="menu" unmountOnExit>
-        <div className="menu">
-          <FaTimes className="close-icon" onClick={toggleMenu} />
-          <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Contact</li>
-            <li>Shop</li>
-          </ul>
-        </div>
-      </CSSTransition>
+      <FaBars className={`hamburger-icon ${animateHamburger ? 'animate' : ''}`} onClick={toggleMenu} />
+      <div className={`menu ${menuOpen ? 'open' : ''}`}>
+        <FaTimes className={`close-icon ${animateClose ? 'animate' : ''}`} onClick={toggleMenu} />
+        <ul>
+          <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
+          <li><Link to="/about" onClick={toggleMenu}>About</Link></li>
+          <li><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
+          <li><Link to="/shop" onClick={toggleMenu}>Shop</Link></li>
+        </ul>
+      </div>
     </div>
   );
 };

@@ -1,34 +1,44 @@
-
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import supabase from '../supabaseClient';
 import { setCategories } from '../slices/categorySlice';
 import { setProducts } from '../slices/productSlice';
 import { setWishlist } from '../slices/wishlistSlice';
+import supabase from '../supabaseClient';
 
 const useFetchData = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const { data } = await supabase.from('categories').select('*');
-      if (data) dispatch(setCategories(data));
-    };
+  const fetchCategories = async () => {
+    const { data, error } = await supabase.from('categories').select('*');
+    if (error) {
+      console.error('Error fetching categories:', error);
+    } else {
+      dispatch(setCategories(data));
+    }
+  };
 
-    const fetchProducts = async () => {
-      const { data } = await supabase.from('products').select('*');
-      if (data) dispatch(setProducts(data));
-    };
+  const fetchProducts = async () => {
+    const { data, error } = await supabase.from('products').select('*');
+    if (error) {
+      console.error('Error fetching products:', error);
+    } else {
+      dispatch(setProducts(data));
+    }
+  };
 
-    const fetchWishlist = async () => {
-      const { data } = await supabase.from('wishlist').select('*');
-      if (data) dispatch(setWishlist(data));
-    };
+  const fetchWishlist = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('wishlist')
+      .select('*')
+      .eq('user_id', userId);
+    if (error) {
+      console.error('Error fetching wishlist:', error);
+    } else {
+      dispatch(setWishlist(data));
+    }
+  };
 
-    fetchCategories();
-    fetchProducts();
-    fetchWishlist();
-  }, [dispatch]);
+  return { fetchCategories, fetchProducts, fetchWishlist };
 };
 
 export default useFetchData;
+

@@ -1,34 +1,30 @@
+// src/slices/wishlistSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface WishlistItem {
-  id: string;
-  userId: string;
-  productId: string;
-}
+import { WishlistItem } from '../types';
 
 interface WishlistState {
-  wishlist: WishlistItem[];
+  items: WishlistItem[];
 }
 
 const initialState: WishlistState = {
-  wishlist: [],
+  items: [],
 };
 
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState,
   reducers: {
+    addToWishlist(state, action: PayloadAction<string>) {
+      state.items.push({ productId: action.payload });
+    },
     setWishlist(state, action: PayloadAction<WishlistItem[]>) {
-      state.wishlist = action.payload;
-    },
-    addWishlistItem(state, action: PayloadAction<WishlistItem>) {
-      state.wishlist.push(action.payload);
-    },
-    removeWishlistItem(state, action: PayloadAction<string>) {
-      state.wishlist = state.wishlist.filter(item => item.id !== action.payload);
+      state.items = action.payload;
     },
   },
 });
 
-export const { setWishlist, addWishlistItem, removeWishlistItem } = wishlistSlice.actions;
+export const { addToWishlist, setWishlist } = wishlistSlice.actions;
 export default wishlistSlice.reducer;
+
+
+

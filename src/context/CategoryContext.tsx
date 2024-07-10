@@ -1,14 +1,13 @@
-// src/context/CategoryContext.tsx
-import React, { createContext, useState, ReactNode, useContext } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { CategoryContextProps } from '../types';
 
-interface CategoryContextProps {
-  selectedCategory: string | null;
-  setSelectedCategory: (category: string | null) => void;
+const CategoryContext = createContext<CategoryContextProps | undefined>(undefined);
+
+interface CategoryProviderProps {
+  children: ReactNode;
 }
 
-export const CategoryContext = createContext<CategoryContextProps | undefined>(undefined);
-
-export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CategoryProvider: React.FC<CategoryProviderProps> = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   return (
@@ -25,6 +24,7 @@ export const useCategoryContext = () => {
   }
   return context;
 };
+
 
 
 

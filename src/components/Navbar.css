@@ -82,3 +82,11 @@
   padding: 1rem;
   border-bottom: 1px solid #ccc;
 }
+
+button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
+}

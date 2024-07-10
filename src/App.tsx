@@ -1,4 +1,4 @@
-// src/App.tsx
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
@@ -12,6 +12,9 @@ import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import { CategoryProvider } from './context/CategoryContext';
 import './App.css';
+import OrderReview from './pages/OrderReview';
+import Payment from './pages/Payment';
+import OrderConfirmation from './pages/OrderConfirmation';
 
 const App: React.FC = () => {
   return (
@@ -29,6 +32,9 @@ const App: React.FC = () => {
                   <Route path="/shop" element={<Shop />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/order-review" element={<OrderReview />} />
+                  <Route path="/payment" element={<Payment />} />
+                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
                 </Routes>
               </div>
             

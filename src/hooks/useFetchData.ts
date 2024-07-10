@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { setCategories } from '../slices/categorySlice';
 import { setProducts } from '../slices/productSlice';
 import { setWishlist } from '../slices/wishlistSlice';
-import supabase from '../supabaseClient';
+import supabase from '../supabase/supabaseClient';
 
 const useFetchData = () => {
   const dispatch = useDispatch();

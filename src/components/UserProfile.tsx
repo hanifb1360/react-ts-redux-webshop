@@ -1,6 +1,6 @@
 // src/components/UserProfile.tsx
 import React, { useEffect, useState } from 'react';
-import supabase from '../supabaseClient';
+import supabase from '../supabase/supabaseClient';
 import { useAuth } from '../context/AuthContext';
 
 const UserProfile: React.FC = () => {

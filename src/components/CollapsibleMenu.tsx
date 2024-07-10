@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setCategories } from '../slices/categorySlice';
-import supabase from '../supabaseClient';
+import supabase from '../supabase/supabaseClient';
 import { useCategoryContext } from '../context/CategoryContext';
 
 const CollapsibleMenu: React.FC = () => {

@@ -1,33 +1,21 @@
 // src/pages/Profile.tsx
-import React, { useEffect, useState } from 'react';
-import supabase from '../supabaseClient';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setOrders } from '../slices/ordersSlice';
-import { Order, WishlistItem, User } from '../types';
-import { mapSupabaseUserToAppUser } from '../utils';
+import { Order, WishlistItem } from '../types';
+import useFetchUser from '../hooks/useFetchUser';
+import supabase from '../supabase/supabaseClient';
 
 const Profile: React.FC = () => {
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, loading } = useFetchUser();
   const wishlist = useSelector((state: RootState) => state.wishlist.items);
   const orders = useSelector((state: RootState) => state.orders.orders);
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error fetching user:', error);
-      } else if (data.user) {
-        setUser(mapSupabaseUserToAppUser(data.user));
-        await fetchOrders(data.user.id);
-      }
-      setLoading(false);
-    };
-
     const fetchOrders = async (userId: string) => {
       const { data, error } = await supabase
         .from('orders')
@@ -40,8 +28,10 @@ const Profile: React.FC = () => {
       }
     };
 
-    fetchProfileData();
-  }, [navigate, dispatch]);
+    if (user) {
+      fetchOrders(user.id);
+    }
+  }, [user, dispatch]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -110,6 +100,8 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
+
+
 
 
 

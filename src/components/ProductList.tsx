@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setProducts } from '../slices/productSlice';
-import { addToCart } from '../slices/cartSlice';
-import { addToWishlist } from '../slices/wishlistSlice';
-import supabase from '../supabaseClient';
+import supabase from '../supabase/supabaseClient';
 import { useCategoryContext } from '../context/CategoryContext';
 import ProductModal from './ProductModal';
 import { Product } from '../types';
@@ -31,7 +29,6 @@ const ProductList: React.FC = () => {
           price: product.price,
           categoryId: product.category_id,
           createdAt: product.created_at,
-          imageUrls: [], // Add a default value for imageUrls
         }))));
       }
     };
@@ -47,35 +44,21 @@ const ProductList: React.FC = () => {
     }
   }, [selectedCategory, products]);
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProduct(null);
-  };
-
-  const handleAddToCart = (product: Product) => {
-    dispatch(addToCart({ productId: product.id, name: product.name, quantity: 1 }));
-  };
-
-  const handleAddToWishlist = (productId: string) => {
-    console.log(`Dispatching addToWishlist for product: ${productId}`);
-    dispatch(addToWishlist(productId));
+  const openProductModal = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      setSelectedProduct(product);
+    }
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-10">
+    <div className="p-4">
       {selectedCategory ? (
         filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-              onClick={() => handleProductClick(product)}
-            >
-              <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-              <p className="mb-2">{product.description}</p>
+            <div key={product.id} className="p-4 border rounded mb-4 cursor-pointer" onClick={() => openProductModal(product.id)}>
+              <h3 className="text-xl font-bold">{product.name}</h3>
+              <p>{product.description}</p>
               <p className="text-green-600 font-semibold">${product.price}</p>
             </div>
           ))
@@ -85,12 +68,11 @@ const ProductList: React.FC = () => {
       ) : (
         <p>Please select a category to view products.</p>
       )}
+
       {selectedProduct && (
         <ProductModal
           product={selectedProduct}
-          onClose={handleCloseModal}
-          addToCart={handleAddToCart}
-          addToWishlist={handleAddToWishlist}
+          onClose={() => setSelectedProduct(null)}
         />
       )}
     </div>
@@ -98,6 +80,12 @@ const ProductList: React.FC = () => {
 };
 
 export default ProductList;
+
+
+
+
+
+
 
 
 

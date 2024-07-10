@@ -1,20 +1,19 @@
 // src/components/ProductModal.tsx
 import React from 'react';
 import { Product } from '../types';
+import useCartActions from '../hooks/useCartActions';
+import useWishlistActions from '../hooks/useWishlistActions';
 
 interface ProductModalProps {
   product: Product | null;
   onClose: () => void;
-  addToCart: (product: Product) => void;
-  addToWishlist: (productId: string) => void;
 }
 
-const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, addToCart, addToWishlist }) => {
-  if (!product) return null;
+const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
+  const { handleAddToCart } = useCartActions();
+  const { handleAddToWishlist } = useWishlistActions();
 
-  const handleAddToWishlist = () => {
-    addToWishlist(product.id);
-  };
+  if (!product) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -30,13 +29,13 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, addToCart
         <p className="mb-4 text-green-600 font-semibold">${product.price}</p>
         <button
           className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-          onClick={() => addToCart(product)}
+          onClick={() => handleAddToCart(product)}
         >
           Add to Cart
         </button>
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-2"
-          onClick={handleAddToWishlist}
+          onClick={() => handleAddToWishlist(product.id)}
         >
           Add to Wishlist
         </button>
@@ -46,6 +45,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose, addToCart
 };
 
 export default ProductModal;
+
 
 
 

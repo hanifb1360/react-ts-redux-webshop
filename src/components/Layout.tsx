@@ -12,9 +12,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="flex-1 mt-16">
         {children}
       </main>
-      <footer className="bg-black text-white py-4 text-center">
-        &copy; 2024 WEBSHOP. All rights reserved.
-      </footer>
+     
     </div>
   );
 };

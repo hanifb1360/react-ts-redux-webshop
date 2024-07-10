@@ -5,27 +5,35 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Shop from './pages/Shop';
-import Profile from './pages/Profile';
 import Cart from './pages/Cart';
+import Profile from './pages/Profile';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import { AuthProvider } from './context/AuthContext';
 import { CategoryProvider } from './context/CategoryContext';
-import Navbar from './components/Navbar';
 import './App.css';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
         <CategoryProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/cart" element={<Cart />} />
-          </Routes>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            
+              <div className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/profile" element={<Profile />} />
+                </Routes>
+              </div>
+            
+            <Footer />
+          </div>
         </CategoryProvider>
       </Router>
     </AuthProvider>
@@ -33,6 +41,7 @@ const App: React.FC = () => {
 };
 
 export default App;
+
 
 
 

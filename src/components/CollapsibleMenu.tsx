@@ -43,9 +43,9 @@ const CollapsibleMenu: React.FC = () => {
   };
 
   return (
-    <div className="w-64 bg-gray-900 text-white h-auto p-6">
+    <div className="w-64 bg-gray-900 text-white h-auto p-6 pt-10">
       {mainCategories.map(category => (
-        <div key={category.id} className="mb-4">
+        <div key={category.id} className="mb-4 ">
           <div 
             className="flex justify-between items-center cursor-pointer p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition duration-300 ease-in-out" 
             onClick={() => handleCategoryClick(category.id)}

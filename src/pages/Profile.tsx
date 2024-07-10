@@ -49,49 +49,68 @@ const Profile: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Profile</h2>
-      {user ? (
-        <div>
-          <p>Email: {user.email}</p>
-          <button onClick={handleLogout} className="bg-red-500 text-white p-2 mt-4 rounded hover:bg-red-600">
-            Logout
-          </button>
-          <div className="mt-8">
-            <h3 className="text-xl font-bold mb-2">Wishlist</h3>
-            <ul>
-              {wishlist.map((item: WishlistItem) => (
-                <li key={item.productId}>{item.productId}</li>
-              ))}
-            </ul>
+    <div className="container mx-4 mx-auto p-4 pt-20">
+      <div className="bg-white shadow rounded-lg p-6">
+        <h2 className="text-3xl font-bold mb-4">Profile</h2>
+        {user ? (
+          <div className="space-y-6">
+            <div className="border p-4 rounded-lg bg-gray-50">
+              <h3 className="text-2xl font-semibold">User Information</h3>
+              <p className="mt-2"><strong>Email:</strong> {user.email}</p>
+              <button 
+                onClick={handleLogout} 
+                className="bg-red-500 text-white py-2 px-4 mt-4 rounded hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </div>
+
+            <div className="border p-4 rounded-lg bg-gray-50">
+              <h3 className="text-2xl font-semibold mb-2">Wishlist</h3>
+              {wishlist.length > 0 ? (
+                <ul className="space-y-2">
+                  {wishlist.map((item: WishlistItem) => (
+                    <li key={item.productId} className="border p-2 rounded bg-white shadow">
+                      {item.productId}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No items in wishlist.</p>
+              )}
+            </div>
+
+            <div className="border p-4 rounded-lg bg-gray-50">
+              <h3 className="text-2xl font-semibold mb-2">Order History</h3>
+              {orders.length > 0 ? (
+                <ul className="space-y-4">
+                  {orders.map((order: Order) => (
+                    <li key={order.id} className="border p-4 rounded bg-white shadow">
+                      <h4 className="font-bold">Order ID: {order.id}</h4>
+                      <p>Items: {order.items.map((i) => i.name).join(', ')}</p>
+                      <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No orders found.</p>
+              )}
+            </div>
           </div>
-          <div className="mt-8">
-            <h3 className="text-xl font-bold mb-2">Order History</h3>
-            <ul>
-              {orders.map((order: Order) => (
-                <li key={order.id}>
-                  <div className="border p-4 rounded mb-2">
-                    <h4 className="font-bold">Order ID: {order.id}</h4>
-                    <p>Items: {order.items.map((i) => i.name).join(', ')}</p>
-                    <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ) : (
-        <p>No user data available</p>
-      )}
+        ) : (
+          <p>No user data available</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default Profile;
+
 
 
 

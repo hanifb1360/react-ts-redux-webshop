@@ -1,5 +1,4 @@
 // src/types.ts
-
 export interface Product {
   id: string;
   name: string;
@@ -10,11 +9,25 @@ export interface Product {
   imageUrls?: string[];
 }
 
-export interface ProductImage {
-  id: string;
+export interface WishlistItem {
   productId: string;
-  imagePath: string;
+  productName: string;
+  productDescription: string;
+  productPrice: number;
+  productImageUrl?: string;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: CartItem[];
   createdAt: string;
+}
+
+export interface CartItem {
+  productId: string;
+  name: string;
+  quantity: number;
 }
 
 export interface Category {
@@ -33,22 +46,5 @@ export interface User {
   id: string;
   email: string;
   name?: string;
-  createdAt: string;
-}
-
-export interface CartItem {
-  productId: string;
-  name: string;
-  quantity: number;
-}
-
-export interface WishlistItem {
-  productId: string;
-}
-
-export interface Order {
-  id: string;
-  userId: string;
-  items: CartItem[];
   createdAt: string;
 }

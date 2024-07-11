@@ -1,21 +1,33 @@
 // src/pages/Profile.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import supabase from '../supabase/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { setOrders } from '../slices/ordersSlice';
-import { Order, WishlistItem } from '../types';
-import useFetchUser from '../hooks/useFetchUser';
-import supabase from '../supabase/supabaseClient';
+import { Order, WishlistItem, User } from '../types';
+import { mapSupabaseUserToAppUser } from '../utils';
 
 const Profile: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user, loading } = useFetchUser();
+  const [user, setUser] = useState<User | null>(null);
   const wishlist = useSelector((state: RootState) => state.wishlist.items);
   const orders = useSelector((state: RootState) => state.orders.orders);
 
   useEffect(() => {
+    const fetchProfileData = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error('Error fetching user:', error);
+      } else if (data.user) {
+        setUser(mapSupabaseUserToAppUser(data.user));
+        await fetchOrders(data.user.id);
+      }
+      setLoading(false);
+    };
+
     const fetchOrders = async (userId: string) => {
       const { data, error } = await supabase
         .from('orders')
@@ -28,10 +40,8 @@ const Profile: React.FC = () => {
       }
     };
 
-    if (user) {
-      fetchOrders(user.id);
-    }
-  }, [user, dispatch]);
+    fetchProfileData();
+  }, [navigate, dispatch]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -43,7 +53,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="container mx-4 mx-auto p-4 pt-20">
+    <div className="container mx-auto p-4 pt-20">
       <div className="bg-white shadow rounded-lg p-6">
         <h2 className="text-3xl font-bold mb-4">Profile</h2>
         {user ? (
@@ -65,7 +75,9 @@ const Profile: React.FC = () => {
                 <ul className="space-y-2">
                   {wishlist.map((item: WishlistItem) => (
                     <li key={item.productId} className="border p-2 rounded bg-white shadow">
-                      {item.productId}
+                      <h4 className="font-semibold">{item.productName}</h4>
+                      <p>{item.productDescription}</p>
+                      <p className="text-green-600 font-semibold">${item.productPrice}</p>
                     </li>
                   ))}
                 </ul>
@@ -100,6 +112,8 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
+
+
 
 
 

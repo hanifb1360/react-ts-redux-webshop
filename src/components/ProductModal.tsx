@@ -35,7 +35,7 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
         </button>
         <button
           className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-2"
-          onClick={() => handleAddToWishlist(product.id)}
+          onClick={() => handleAddToWishlist(product)}
         >
           Add to Wishlist
         </button>
@@ -45,6 +45,8 @@ const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
 };
 
 export default ProductModal;
+
+
 
 
 

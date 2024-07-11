@@ -1,15 +1,17 @@
 // src/pages/Profile.tsx
 import React, { useEffect, useState } from 'react';
-import supabase from '../supabase/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import supabase from '../supabase/supabaseClient';
 import { RootState } from '../store';
 import { setOrders } from '../slices/ordersSlice';
 import { Order, WishlistItem, User } from '../types';
 import { mapSupabaseUserToAppUser } from '../utils';
+import AuthenticationForm from '../components/AuthenticationForm';
 
 const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [user, setUser] = useState<User | null>(null);
@@ -45,8 +47,26 @@ const Profile: React.FC = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/login');
+    setUser(null); // Set user to null to show the login form
+    navigate('/profile');
   };
+
+  const toggleSignUp = () => {
+    setIsSignUp(!isSignUp);
+  };
+
+  useEffect(() => {
+    const authListener = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser(mapSupabaseUserToAppUser(session.user));
+        navigate('/profile');
+      }
+    });
+
+    return () => {
+      authListener.data?.subscription.unsubscribe();
+    };
+  }, [navigate]);
 
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
@@ -104,7 +124,7 @@ const Profile: React.FC = () => {
             </div>
           </div>
         ) : (
-          <p>No user data available</p>
+          <AuthenticationForm isSignUp={isSignUp} toggleSignUp={toggleSignUp} />
         )}
       </div>
     </div>
@@ -112,6 +132,7 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
+
 
 
 

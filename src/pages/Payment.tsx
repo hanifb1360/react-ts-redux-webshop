@@ -1,13 +1,14 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Payment: React.FC = () => {
   const navigate = useNavigate();
 
+  // Mock payment processing function
   const handlePayment = () => {
-    // Mock payment processing
+    // Simulate payment processing delay
     setTimeout(() => {
+      // Navigate to order confirmation page after payment
       navigate('/order-confirmation');
     }, 2000);
   };
@@ -43,3 +44,33 @@ const Payment: React.FC = () => {
 
 export default Payment;
 
+/*
+ * For a real-world application, consider integrating a payment gateway to handle payments securely.
+ * Some popular options include:
+ * 
+ * 1. Stripe:
+ *    - Provides easy-to-use APIs for integrating payment processing.
+ *    - Supports various payment methods including credit/debit cards, Apple Pay, Google Pay, etc.
+ *    - Offers features like subscriptions, fraud prevention, and more.
+ *    - Documentation: https://stripe.com/docs
+ * 
+ * 2. PayPal:
+ *    - Another widely used payment processor that supports multiple payment methods.
+ *    - Offers a straightforward integration process.
+ *    - Provides options for one-time payments and recurring billing.
+ *    - Documentation: https://developer.paypal.com/docs/api/overview/
+ * 
+ * 3. Square:
+ *    - Known for its user-friendly interface and ease of integration.
+ *    - Supports point-of-sale payments, e-commerce, and in-app payments.
+ *    - Offers a variety of developer tools and resources.
+ *    - Documentation: https://developer.squareup.com/docs
+ * 
+ * 4. Adyen:
+ *    - A global payment processor that supports a wide range of payment methods and currencies.
+ *    - Suitable for large-scale and international businesses.
+ *    - Provides comprehensive APIs and detailed documentation.
+ *    - Documentation: https://docs.adyen.com/
+ * 
+ * When integrating any payment gateway, make sure to follow best practices for security, including handling sensitive data like card numbers securely and complying with PCI-DSS standards.
+ */

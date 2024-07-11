@@ -19,6 +19,10 @@ const Profile: React.FC = () => {
   const orders = useSelector((state: RootState) => state.orders.orders);
 
   useEffect(() => {
+    /**
+     * Fetches the authenticated user's profile data.
+     * Sets the user state and fetches the user's orders if a user is found.
+     */
     const fetchProfileData = async () => {
       const { data, error } = await supabase.auth.getUser();
       if (error) {
@@ -30,6 +34,10 @@ const Profile: React.FC = () => {
       setLoading(false);
     };
 
+    /**
+     * Fetches the authenticated user's orders from the database.
+     * Dispatches the orders to the Redux store.
+     */
     const fetchOrders = async (userId: string) => {
       const { data, error } = await supabase
         .from('orders')
@@ -45,17 +53,29 @@ const Profile: React.FC = () => {
     fetchProfileData();
   }, [navigate, dispatch]);
 
+  /**
+   * Handles user logout by signing out the user from Supabase.
+   * Sets the user state to null to show the login form.
+   * Redirects to the profile page.
+   */
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null); // Set user to null to show the login form
     navigate('/profile');
   };
 
+  /**
+   * Toggles the authentication form between sign-up and login modes.
+   */
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
   };
 
   useEffect(() => {
+    /**
+     * Listens for changes in the authentication state.
+     * If a user is authenticated, sets the user state and redirects to the profile page.
+     */
     const authListener = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser(mapSupabaseUserToAppUser(session.user));

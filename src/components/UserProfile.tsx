@@ -8,7 +8,9 @@ const UserProfile: React.FC = () => {
   const [wishlist, setWishlist] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
 
+  // Fetch wishlist and orders when the user is set
   useEffect(() => {
+    // Fetch the user's wishlist
     const fetchWishlist = async (userId: string) => {
       const { data, error } = await supabase
         .from('wishlist')
@@ -21,6 +23,7 @@ const UserProfile: React.FC = () => {
       }
     };
 
+    // Fetch the user's orders
     const fetchOrders = async (userId: string) => {
       const { data, error } = await supabase
         .from('orders')
@@ -33,12 +36,14 @@ const UserProfile: React.FC = () => {
       }
     };
 
+    // If the user is logged in, fetch their wishlist and orders
     if (user) {
       fetchWishlist(user.id);
       fetchOrders(user.id);
     }
   }, [user]);
 
+  // Handle user logout
   const handleLogout = async () => {
     await signOut();
   };
@@ -84,3 +89,4 @@ const UserProfile: React.FC = () => {
 };
 
 export default UserProfile;
+

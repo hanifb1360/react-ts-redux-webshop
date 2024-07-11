@@ -7,6 +7,9 @@ import supabase from '../supabase/supabaseClient';
 const useFetchData = () => {
   const dispatch = useDispatch();
 
+  /**
+   * Fetches categories from Supabase and dispatches the setCategories action with the fetched data.
+   */
   const fetchCategories = async () => {
     const { data, error } = await supabase.from('categories').select('*');
     if (error) {
@@ -16,6 +19,9 @@ const useFetchData = () => {
     }
   };
 
+  /**
+   * Fetches products from Supabase and dispatches the setProducts action with the fetched data.
+   */
   const fetchProducts = async () => {
     const { data, error } = await supabase.from('products').select('*');
     if (error) {
@@ -25,6 +31,10 @@ const useFetchData = () => {
     }
   };
 
+  /**
+   * Fetches wishlist items for a specific user from Supabase and dispatches the setWishlist action with the fetched data.
+   * @param userId - The ID of the user whose wishlist items are to be fetched.
+   */
   const fetchWishlist = async (userId: string) => {
     const { data, error } = await supabase
       .from('wishlist')

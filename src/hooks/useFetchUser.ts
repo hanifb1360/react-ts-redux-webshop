@@ -9,6 +9,11 @@ const useFetchUser = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    /**
+     * Fetches the current authenticated user from Supabase.
+     * Maps the fetched user data to the app's User type and sets the user state.
+     * Handles any errors that occur during the fetch operation.
+     */
     const fetchUser = async () => {
       const { data, error } = await supabase.auth.getUser();
       if (error) {
@@ -18,6 +23,7 @@ const useFetchUser = () => {
       }
       setLoading(false);
     };
+
     fetchUser();
   }, []);
 
@@ -25,3 +31,4 @@ const useFetchUser = () => {
 };
 
 export default useFetchUser;
+

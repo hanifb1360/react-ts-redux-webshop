@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { CategoryContextProps } from '../types';
 
+// Create a context for the category
 const CategoryContext = createContext<CategoryContextProps | undefined>(undefined);
 
 interface CategoryProviderProps {
   children: ReactNode;
 }
 
+// Provide the context to child components
 export const CategoryProvider: React.FC<CategoryProviderProps> = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -17,6 +19,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({ children }) 
   );
 };
 
+// Custom hook to use the CategoryContext
 export const useCategoryContext = () => {
   const context = useContext(CategoryContext);
   if (!context) {

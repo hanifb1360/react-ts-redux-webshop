@@ -12,6 +12,7 @@ const CollapsibleMenu: React.FC = () => {
   const categories = useSelector((state: RootState) => state.categories.categories);
   const { setSelectedCategory } = useCategoryContext();
 
+  // Fetch categories from the database and dispatch to the Redux store
   useEffect(() => {
     const fetchCategories = async () => {
       const { data, error } = await supabase.from('categories').select('*');
@@ -31,13 +32,18 @@ const CollapsibleMenu: React.FC = () => {
     fetchCategories();
   }, [dispatch]);
 
+  // Filter main categories that have no parent
   const mainCategories = categories.filter(category => category.parentId === null);
+
+  // Get subcategories based on parent category ID
   const getSubCategories = (parentId: string) => categories.filter(category => category.parentId === parentId);
 
+  // Handle the main category click to expand/collapse subcategories
   const handleCategoryClick = (categoryId: string) => {
     setExpandedCategory(expandedCategory === categoryId ? null : categoryId);
   };
 
+  // Handle subcategory click to set selected category
   const handleSubCategoryClick = (subCategoryId: string) => {
     setSelectedCategory(subCategoryId);
   };
@@ -45,7 +51,7 @@ const CollapsibleMenu: React.FC = () => {
   return (
     <div className="w-64 bg-gray-900 text-white h-auto p-6 pt-10">
       {mainCategories.map(category => (
-        <div key={category.id} className="mb-4 ">
+        <div key={category.id} className="mb-4">
           <div 
             className="flex justify-between items-center cursor-pointer p-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition duration-300 ease-in-out" 
             onClick={() => handleCategoryClick(category.id)}

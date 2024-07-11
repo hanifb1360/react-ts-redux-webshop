@@ -13,6 +13,11 @@ const Cart: React.FC = () => {
   const { handleRemoveFromCart, handleClearCart } = useCartActions();
   const navigate = useNavigate();
 
+  /**
+   * Handles the checkout process.
+   * If the user is not logged in, displays an alert and navigates to the login page.
+   * If the user is logged in, navigates to the order review page.
+   */
   const handleCheckout = () => {
     if (!user) {
       alert('You need to log in to proceed with checkout.');
@@ -70,8 +75,6 @@ const Cart: React.FC = () => {
 };
 
 export default Cart;
-
-
 
 
 

@@ -13,18 +13,19 @@ const AuthenticationForm: React.FC<AuthenticationFormProps> = ({ isSignUp, toggl
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  // Handles the authentication process based on the form state (sign up or login)
   const handleAuth = async () => {
     setError(null);
     try {
       if (isSignUp) {
-        await signUp(email, password);
+        await signUp(email, password); // Calls signUp function from AuthContext
       } else {
-        await signIn(email, password);
+        await signIn(email, password); // Calls signIn function from AuthContext
       }
-      setEmail('');
-      setPassword('');
+      setEmail(''); // Clear the email input
+      setPassword(''); // Clear the password input
     } catch (error: any) {
-      setError(error.message);
+      setError(error.message); // Sets error message if authentication fails
     }
   };
 

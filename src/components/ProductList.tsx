@@ -6,7 +6,7 @@ import { setProducts } from '../slices/productSlice';
 import supabase from '../supabase/supabaseClient';
 import { useCategoryContext } from '../context/CategoryContext';
 import ProductModal from './ProductModal';
-import { Product } from '../types';
+import { Product, ProductAvailability } from '../types';
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,20 +15,19 @@ const ProductList: React.FC = () => {
   const { selectedCategory } = useCategoryContext();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Fetch products from the database and dispatch to the Redux store
   useEffect(() => {
     const fetchProducts = async () => {
       const { data, error } = await supabase.from('products').select('*');
       if (error) {
         console.error('Error fetching products:', error);
-      }
-      if (data) {
+      } else if (data) {
         dispatch(setProducts(data.map((product: any) => ({
           id: product.id,
           name: product.name,
           description: product.description,
           price: product.price,
           categoryId: product.category_id,
+          availability: product.availability as ProductAvailability,
           createdAt: product.created_at,
         }))));
       }
@@ -37,7 +36,6 @@ const ProductList: React.FC = () => {
     fetchProducts();
   }, [dispatch]);
 
-  // Filter products based on the selected category
   useEffect(() => {
     if (selectedCategory) {
       setFilteredProducts(products.filter(product => product.categoryId === selectedCategory));
@@ -46,7 +44,6 @@ const ProductList: React.FC = () => {
     }
   }, [selectedCategory, products]);
 
-  // Open the product modal for the selected product
   const openProductModal = (productId: string) => {
     const product = products.find(p => p.id === productId);
     if (product) {
@@ -63,6 +60,9 @@ const ProductList: React.FC = () => {
               <h3 className="text-xl font-bold">{product.name}</h3>
               <p>{product.description}</p>
               <p className="text-green-600 font-semibold">${product.price}</p>
+              <p className={`text-sm ${product.availability === ProductAvailability.InStock ? 'text-green-500' : 'text-red-500'}`}>
+                {product.availability}
+              </p>
             </div>
           ))
         ) : (
@@ -83,6 +83,7 @@ const ProductList: React.FC = () => {
 };
 
 export default ProductList;
+
 
 
 

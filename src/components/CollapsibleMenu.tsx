@@ -5,6 +5,7 @@ import { RootState } from '../store';
 import { setCategories } from '../slices/categorySlice';
 import supabase from '../supabase/supabaseClient';
 import { useCategoryContext } from '../context/CategoryContext';
+import { CategoryType, Category } from '../types';
 
 const CollapsibleMenu: React.FC = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
@@ -25,17 +26,17 @@ const CollapsibleMenu: React.FC = () => {
           name: category.name,
           parentId: category.parent_id,
           createdAt: category.created_at,
-        }))));
+          type: category.parent_id ? CategoryType.SubCategory : CategoryType.MainCategory, // Set the type based on parentId
+        } as Category))));
       }
     };
 
     fetchCategories();
   }, [dispatch]);
 
-  // Filter main categories that have no parent
-  const mainCategories = categories.filter(category => category.parentId === null);
-
-  // Get subcategories based on parent category ID
+  // Filter main categories 
+  const mainCategories = categories.filter(category => category.type === CategoryType.MainCategory);
+    // Get subcategories based on parent category ID
   const getSubCategories = (parentId: string) => categories.filter(category => category.parentId === parentId);
 
   // Handle the main category click to expand/collapse subcategories
@@ -84,6 +85,7 @@ const CollapsibleMenu: React.FC = () => {
 };
 
 export default CollapsibleMenu;
+
 
 
 
